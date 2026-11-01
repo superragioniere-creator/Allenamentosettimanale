@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<title>Il mio allenamento</title>
+<style>
+:root{--bg:#0b1220;--panel:#141f30;--panel2:#1b2a3e;--line:#29394f;--text:#f4f7fb;--muted:#a7b4c5;--accent:#79b8ff;--green:#80d6b0;--orange:#ffc77a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#101b2b 0,#0b1220 360px);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+main{max-width:720px;margin:auto;padding:22px 16px 40px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--muted);font-weight:700}.brand{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-top:5px}.week-switch{display:flex;background:#202e42;padding:4px;border-radius:14px;gap:4px}.week-switch button{border:0;background:transparent;color:var(--muted);font-weight:750;padding:9px 13px;border-radius:10px}.week-switch button.active{background:var(--accent);color:#102033}
+.hero{margin:25px 0 18px}.hero small{color:var(--muted);font-weight:650;letter-spacing:.12em;font-size:11px}.hero h1{font-size:34px;letter-spacing:-.05em;margin:5px 0 4px}.hero p{margin:0;color:var(--muted);font-size:14px}
+.day-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:20px 0 18px}.day{border:1px solid var(--line);background:#111d2d;color:var(--muted);border-radius:13px;padding:11px 2px 9px;text-align:center;min-width:0}.day strong{display:block;font-size:12px}.day span{display:block;font-size:9px;margin-top:6px;white-space:nowrap}.day.selected{background:var(--accent);border-color:var(--accent);color:#102033}.day.training:not(.selected){border-color:#46617f;color:var(--text)}
+.status{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:99px;padding:7px 11px;font-size:11px;color:var(--muted);margin-bottom:13px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.card{background:rgba(20,31,48,.94);border:1px solid var(--line);border-radius:19px;padding:17px;margin:12px 0}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.card h2{font-size:18px;margin:0 0 5px;letter-spacing:-.02em}.sub{font-size:13px;color:var(--muted);line-height:1.45}.duration{white-space:nowrap;color:var(--accent);font-size:12px;font-weight:750;background:#203750;padding:7px 9px;border-radius:9px}
+.section-title{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.12em;margin:19px 0 10px}.warmup,.note{font-size:13px;line-height:1.55;color:#d8e1ec}.warmup ul,.note ul{margin:7px 0 0;padding-left:18px}.warmup li,.note li{margin:4px 0}
+.exercise{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid #29394f}.exercise:last-child{border-bottom:0;padding-bottom:0}.check{appearance:none;width:21px;height:21px;border:1.5px solid #657991;border-radius:7px;flex:none;margin:0;background:transparent}.check:checked{background:var(--green);border-color:var(--green);position:relative}.check:checked:after{content:"✓";position:absolute;color:#10251f;font-size:15px;font-weight:900;left:4px;top:0}.exercise label{flex:1;min-width:0}.exercise-name{font-size:14px;font-weight:650;display:block}.exercise-meta{font-size:11px;color:var(--muted);display:block;margin-top:4px}.exercise.done .exercise-name{text-decoration:line-through;color:#8292a6}.tag{font-size:10px;color:var(--accent);background:#203750;padding:6px 8px;border-radius:8px;white-space:nowrap}
+.progress{height:5px;background:#29394f;border-radius:9px;overflow:hidden;margin-top:13px}.progress>div{height:100%;background:var(--green);width:0;transition:width .2s}.progress-label{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:7px}
+.rest{padding:24px 5px;text-align:center}.rest .symbol{font-size:32px}.rest h2{font-size:21px;margin:10px 0 6px}.rest p{color:var(--muted);font-size:14px;line-height:1.5;max-width:390px;margin:auto}
+.footer-note{font-size:12px;color:var(--muted);line-height:1.6;padding:8px 4px}.footer-note strong{color:#e1eaf5}
+details{background:#111d2d;border:1px solid var(--line);border-radius:15px;padding:14px 15px;margin-top:12px}summary{font-size:14px;font-weight:700;cursor:pointer}details .note{margin-top:12px}
+.nav{display:flex;gap:10px;margin:17px 0}.nav button{flex:1;border:1px solid var(--line);background:#172538;color:var(--text);padding:13px;border-radius:12px;font-weight:700;font-size:13px}.nav button:active{transform:scale(.98)}
+@media(min-width:600px){main{padding:32px 24px 50px}.hero h1{font-size:42px}.day-strip{gap:9px}.day{padding:13px 5px}}
+</style>
+</head>
+<body>
+<main>
+ <div class="top">
+  <div><div class="eyebrow">IL TUO PROGRAMMA</div><div class="brand">ALLENAMENTO</div></div>
+  <div class="week-switch" aria-label="Seleziona settimana"><button id="weekA" class="active">A</button><button id="weekB">B</button></div>
+ </div>
+ <section class="hero"><small id="weekLabel">SETTIMANA A</small><h1 id="dayTitle">Martedì</h1><p id="daySubtitle">Gambe e core · Casa</p></section>
+ <div class="day-strip" id="days"></div>
+ <div id="content"></div>
+ <div class="nav"><button id="prev">← Giorno precedente</button><button id="next">Giorno successivo →</button></div>
+ <details><summary>Progressione e indicazioni generali</summary><div class="note">
+  <p><strong>Durante tutte le sedute</strong></p>
+  <ul><li>Non allenarti fino al cedimento: mantieni 2-3 ripetizioni di margine.</li><li>Recupero: 60-90 secondi a casa; 90-120 secondi negli esercizi principali in palestra.</li><li>Movimenti controllati, senza slanci. Evita presa intensa ed esercizi che provocano dolore al gomito.</li><li>Gli esercizi specifici per l'epitrocleite restano quelli indicati dal fisioterapista.</li><li>Se il dolore aumenta durante l'allenamento o peggiora nelle 24 ore successive, riduci o sospendi l'attività che lo ha provocato.</li></ul>
+  <p><strong>Prime due settimane:</strong> carichi gestibili, qualità del movimento e verifica della risposta del gomito nelle 24 ore successive.</p>
+  <p><strong>Dalla terza settimana:</strong> se il recupero è buono, aumenta gradualmente i carichi alle macchine; nel cardio puoi aggiungere 5 minuti. Mantieni leggero il venerdì della Settimana B.</p>
+  <p><strong>Ritorno al tennis:</strong> graduale e concordato con il fisioterapista, in base al recupero del gomito e alla tolleranza ai carichi specifici del gioco.</p>
+ </div></details>
+ <p class="footer-note"><strong>Nota:</strong> questo programma è una proposta di allenamento generale e non sostituisce la riabilitazione prescritta dal fisioterapista. La priorità è mantenere la condizione fisica senza rallentare il recupero dell'epitrocleite.</p>
+</main>
+<script>
+const days=['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
+const short=['LUN','MAR','MER','GIO','VEN','SAB','DOM'];
+const A={
+1:{title:'Allenamento A: gambe e core',place:'Casa',duration:'40-45 min',warm:['Mobilità delle anche · 1 minuto','Circonduzioni delle gambe · 1 minuto','Squat a corpo libero · 2 × 10','Marcia sul posto · 1 minuto'],ex:[['Bulgarian split squat a corpo libero','3 serie · 10 per gamba'],['Squat a corpo libero','3 serie · 15 ripetizioni'],['Hip thrust su letto o divano','3 serie · 15 ripetizioni'],['Ponte glutei monopodalico','3 serie · 10 per gamba'],['Wall sit (schiena al muro)','2 serie · 30-40 secondi'],['Dead bug','3 serie · 10 per lato'],['Reverse crunch','2 serie · 12 ripetizioni']],notes:['Nel Bulgarian split squat mantieni il busto stabile e scendi in modo controllato.','Nell’hip thrust fermati 1-2 secondi in contrazione.','Nel dead bug mantieni la zona lombare stabile, senza inarcare la schiena.'],stretch:['Quadricipiti · 30 secondi per lato','Glutei · 30 secondi per lato','Flessori dell’anca · 30 secondi per lato','Muscoli posteriori della coscia · 30 secondi per lato'],stretchTime:'5 min'},
+3:{title:'Allenamento B: postura, mobilità e core',place:'Casa',duration:'30-35 min',warm:['Mobilità cervicale e delle spalle','Circonduzioni delle braccia','Mobilità toracica'],ex:[['Wall slide alla parete','3 serie · 12 ripetizioni'],['Prone Y (sollevamento braccia a Y, prono)','2 serie · 10 ripetizioni'],['Prone T (sollevamento braccia a T, prono)','2 serie · 10 ripetizioni'],['Bird dog controllato','3 serie · 10 per lato'],['Open book (mobilità toracica)','2 serie · 10 per lato'],['Dead bug','3 serie · 10 per lato'],['Reverse crunch','2 serie · 12 ripetizioni']],notes:['Gli esercizi Y e T vanno eseguiti senza pesi e senza forzare le spalle.','Nel bird dog evita di inarcare la zona lombare.','Non utilizzare elastici o manubri per gli esercizi posturali in questa fase.','Nessun esercizio deve provocare dolore al gomito.'],stretch:['Pettorali alla parete · 30 secondi per lato','Mobilità toracica · 1 minuto','Stretching dorsale · 30 secondi','Flessori dell’anca · 30 secondi per lato','Glutei · 30 secondi per lato'],stretchTime:'8 min'},
+5:{title:'Allenamento C: forza muscolare',place:'Palestra',duration:'60-70 min',warm:['Cyclette · 5 minuti','Mobilità di anche, ginocchia e caviglie','1 serie leggera di riscaldamento per i primi esercizi'],ex:[['Leg press','4 serie · 8-10 ripetizioni'],['Hack squat','3 serie · 10 ripetizioni'],['Leg curl','3 serie · 10-12 ripetizioni'],['Leg extension','3 serie · 10-12 ripetizioni'],['Hip thrust machine','3 serie · 10-12 ripetizioni'],['Abductor machine','3 serie · 15 ripetizioni'],['Crunch su tappetino','3 serie · 15 ripetizioni']],notes:['Utilizza carichi medio-alti, mantenendo 2-3 ripetizioni di margine.','Aumenta il carico solo se la tecnica rimane corretta.','Evita di stringere le maniglie delle macchine se questo provoca fastidio al gomito.','Non eseguire esercizi con manubri o bilancieri che richiedano una presa intensa.','Non arrivare al cedimento.'],stretch:['Quadricipiti · 30 secondi per lato','Femorali · 30 secondi per lato','Glutei · 30 secondi per lato','Adduttori · 30 secondi per lato','Polpacci · 30 secondi per lato','Flessori dell’anca · 30 secondi per lato'],stretchTime:'10 min'},
+6:{title:'Allenamento D: condizionamento cardiovascolare',place:'Palestra',duration:'40-50 min',cardio:[['Cyclette','8 minuti','Riscaldamento'],['Ellittica','20 minuti','Moderata'],['Cyclette','15 minuti','Moderata'],['Defaticamento','5 minuti','Leggera']],notes:['Mantieni un’intensità aerobica moderata, indicativamente RPE 4-6 su 10.','Durante il lavoro principale devi riuscire a parlare, pur avvertendo un certo impegno.','Utilizza preferibilmente le impugnature fisse dell’ellittica, senza stringerle.','Non utilizzare per ora vogatore e Assault AirBike: richiedono un lavoro significativo di presa e braccia.'],stretch:['Quadricipiti, femorali, glutei, polpacci e flessori dell’anca'],stretchTime:'10 min'}
+};
+const B={
+2:{...A[1],title:'Allenamento A: gambe e core'},
+4:{title:'Allenamento B: mobilità, postura e core leggero',place:'Casa',duration:'25-30 min',warm:[],ex:[['Wall slide alla parete','2 serie · 12 ripetizioni'],['Prone Y senza pesi','2 serie · 10 ripetizioni'],['Prone T senza pesi','2 serie · 10 ripetizioni'],['Bird dog controllato','2 serie · 10 per lato'],['Open book','2 serie · 10 per lato'],['Dead bug','2 serie · 10 per lato'],['Mobilità del bacino e delle anche','2 serie · 1 minuto']],notes:['Questa seduta non deve affaticare le gambe prima della forza del sabato.','Esegui tutto senza fretta e senza cercare l’affaticamento muscolare.','Evita esercizi di forza per le braccia e qualsiasi attività che solleciti la presa.','Considera questa seduta come un lavoro di mantenimento e recupero attivo.'],stretch:['Pettorali, dorsali, glutei, flessori dell’anca e muscoli posteriori della coscia'],stretchTime:'8 min'},
+5:{...A[5],notes:['Mantieni 2-3 ripetizioni di margine.','Non arrivare al cedimento.','Non aumentare i carichi rispetto alla Settimana A se il recupero non è completo.','Evita qualsiasi esercizio che provochi fastidio al gomito.']},
+6:{...A[6],notes:['Mantieni un’intensità aerobica moderata, RPE 4-6 su 10.','Evita di trasformare la seduta in un allenamento ad alta intensità.','Se le gambe sono ancora affaticate dal sabato, riduci la durata a 30-35 minuti.','Preferisci le impugnature fisse dell’ellittica, senza stringerle.']}
+};
+let week='A', selected=(new Date().getDay()+6)%7;
+const storeKey=()=>`allenamento-${week}-${selected}`;
+function list(items){return '<ul>'+items.map(x=>`<li>${x}</li>`).join('')+'</ul>'}
+function render(){
+ const plan=week==='A'?A:B, workout=plan[selected];
+ document.getElementById('weekLabel').textContent=`SETTIMANA ${week}`;
+ document.getElementById('dayTitle').textContent=days[selected];
+ document.getElementById('daySubtitle').textContent=workout?`${workout.title.split(':')[1].trim()} · ${workout.place}`:'Giornata di recupero';
+ document.getElementById('weekA').classList.toggle('active',week==='A');
+ document.getElementById('weekB').classList.toggle('active',week==='B');
+ document.getElementById('days').innerHTML=days.map((d,i)=>`<button class="day ${i===selected?'selected':''} ${(plan[i]?'training':'')}" data-day="${i}"><strong>${short[i]}</strong><span>${plan[i]?'●':'—'}</span></button>`).join('');
+ document.querySelectorAll('.day').forEach(b=>b.addEventListener('click',()=>{selected=+b.dataset.day;render()}));
+ const root=document.getElementById('content');
+ if(!workout){root.innerHTML=`<div class="card rest"><div class="symbol">☁️</div><h2>Giornata di riposo</h2><p>Oggi il programma prevede recupero. Rispetta i tempi di riposo: fanno parte dell’allenamento.</p></div>`;return}
+ let html=`<div class="status"><span class="dot"></span> GIORNATA DI ALLENAMENTO</div><section class="card"><div class="card-head"><div><h2>${workout.title}</h2><div class="sub">${workout.place}</div></div><span class="duration">${workout.duration}</span></div>`;
+ if(workout.warm?.length)html+=`<div class="section-title">RISCALDAMENTO</div><div class="warmup">${list(workout.warm)}</div>`;
+ if(workout.cardio){html+='<div class="section-title">PROGRAMMA CARDIO</div>';workout.cardio.forEach((c,i)=>html+=`<div class="exercise"><label><span class="exercise-name">${c[0]}</span><span class="exercise-meta">${c[1]}</span></label><span class="tag">${c[2]}</span></div>`)}
+ if(workout.ex){html+='<div class="section-title">ESERCIZI · SPUNTA QUELLI COMPLETATI</div><div id="exerciseList">';workout.ex.forEach((e,i)=>html+=`<div class="exercise" data-index="${i}"><input class="check" type="checkbox" id="ex${i}"><label for="ex${i}"><span class="exercise-name">${e[0]}</span><span class="exercise-meta">${e[1]}</span></label></div>`);html+='</div><div class="progress"><div id="progressBar"></div></div><div class="progress-label"><span>Avanzamento</span><span id="progressText">0/'+workout.ex.length+'</span></div>'}
+ if(workout.notes?.length)html+=`<div class="section-title">NOTE TECNICHE</div><div class="note">${list(workout.notes)}</div>`;
+ if(workout.stretch?.length)html+=`<div class="section-title">STRETCHING FINALE · ${workout.stretchTime}</div><div class="warmup">${list(workout.stretch)}</div>`;
+ html+='</section>';root.innerHTML=html;
+ const checks=[...root.querySelectorAll('.check')], saved=JSON.parse(localStorage.getItem(storeKey())||'[]');
+ checks.forEach((c,i)=>{c.checked=saved.includes(i);c.closest('.exercise').classList.toggle('done',c.checked);c.addEventListener('change',()=>{c.closest('.exercise').classList.toggle('done',c.checked);const vals=checks.map((x,j)=>x.checked?j:-1).filter(x=>x>=0);localStorage.setItem(storeKey(),JSON.stringify(vals));updateProgress()})});
+ function updateProgress(){const n=checks.filter(x=>x.checked).length;document.getElementById('progressBar').style.width=(n/checks.length*100)+'%';document.getElementById('progressText').textContent=n+'/'+checks.length}
+ if(checks.length)updateProgress();
+}
+document.getElementById('weekA').onclick=()=>{week='A';render()};
+document.getElementById('weekB').onclick=()=>{week='B';render()};
+document.getElementById('prev').onclick=()=>{selected=(selected+6)%7;render()};
+document.getElementById('next').onclick=()=>{selected=(selected+1)%7;render()};
+render();
+</script>
+</body></html>
